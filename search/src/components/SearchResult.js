@@ -15,7 +15,6 @@ export default function SearchResult() {
     axios.get(URL)
       .then(result => {
         setImages(result.data.hits);
-        console.log(result.data.hits)
       })
       .catch(error => {
         console.error(error);
@@ -44,30 +43,37 @@ export default function SearchResult() {
     )
   }
 
-  function displayImages(images) {
+  function displayImages(images, n) {
     let result = [];
-    let imagesCopy = JSON.parse(JSON.stringify(images));
-    for (let n = 0; n < images.length; n += 3) {
+    for (let i = n; i < images.length; i += 4) {
+      let image = images[i];
       result.push(
-        <div className="column">
-          {imagesCopy.splice(n, 3).map(image =>
-            <div className="card">
-              <img src={image.largeImageURL} alt={image.id} />
-              <div className="container">
-                <div className="stats">
-                  {displayStats(image.comments, image.favorites, image.likes)}
-                </div>
-                <div className="tags">
-                  {displayTags(image.tags)}
-                </div>
-              </div>
+        <div className="card">
+          <img src={image.largeImageURL} alt={image.id} />
+          <div className="container">
+            <div className="stats">
+              {displayStats(image.comments, image.favorites, image.likes)}
             </div>
-          )
-          }
-        </div >
+            <div className="tags">
+              {displayTags(image.tags)}
+            </div>
+          </div>
+        </div>
       )
     }
-    return result
+    return result;
+  }
+
+  function createColumns(images) {
+    let result = [];
+    let imagesCopy = JSON.parse(JSON.stringify(images));
+    for (let n = 0; n < 4; n++) {
+      result.push(
+        <div className="column">
+          {displayImages(imagesCopy, n)}
+        </div>
+      )
+    } return result;
   }
 
   return (
@@ -75,7 +81,7 @@ export default function SearchResult() {
       <SearchEngine getImages={getImages} />
       <div className="images">
         <div className="row">
-          {displayImages(images)}
+          {createColumns(images)}
         </div>
       </div>
     </div >

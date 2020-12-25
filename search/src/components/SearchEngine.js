@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaSearch } from "react-icons/fa";
 
 export default function SearchResult({ getImages }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,12 +19,12 @@ export default function SearchResult({ getImages }) {
   return (
     <div>
       <div className="search">
-        <h2>Looking for a Photo?</h2>
         <form onSubmit={handleSubmit}>
+          <FaSearch className="icon" />
           <input
             className="input"
             type="text"
-            placeholder="Search..."
+            placeholder="Looking for images?"
             value={searchTerm}
             onChange={handleChange}></input>
         </form>

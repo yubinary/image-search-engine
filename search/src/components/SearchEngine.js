@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaSearch } from "react-icons/fa";
 import Checkbox from "./Checkbox.js"
 
@@ -10,6 +10,31 @@ export default function SearchResult({ getImages }) {
   const [minHeight, setMinHeight] = useState("");
   const [color, setColor] = useState({});
 
+  // debounce to send request every 500ms
+  const debounce = (fn, delay) => {
+    let timeoutID;
+    return function (...args) {
+      if (timeoutID) {
+        clearTimeout(timeoutID);
+      }
+      timeoutID = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  };
+
+  // used callback to avoid function being created every time
+  const debounceMinWidth = useRef(
+    debounce((event) =>
+      getImages(searchTerm, order, orie, event.target.value, minHeight, color), 500
+    )
+  ).current;
+
+  const debounceMinHeight = useRef(
+    debounce((event) =>
+      getImages(searchTerm, order, orie, minWidth, event.target.value, color), 500
+    )
+  ).current;
 
   // apply whatever inside the input field to state
   function handleChangeOrder(event) {
@@ -27,6 +52,16 @@ export default function SearchResult({ getImages }) {
     setColor(obj);
     getImages(searchTerm, order, orie, minWidth, minHeight, obj);
   }
+
+  function handleChangeMinWidth(event) {
+    setMinWidth(event.target.value);
+    debounceMinWidth(event);
+  };
+
+  function handleChangeMinHeight(event) {
+    setMinHeight(event.target.value);
+    debounceMinHeight(event)
+  };
 
   // when form submitted, send get request to API
   function handleSubmit(event) {
@@ -98,16 +133,16 @@ export default function SearchResult({ getImages }) {
           <div className="select-arrow"></div>
         </div>
         <div className="filter min">
-          <form onSubmit={handleSubmit}>
+          <form>
             <input
               value={minWidth}
               placeholder="Min Width"
-              onChange={(event) => setMinWidth(event.target.value)}></input>
+              onChange={handleChangeMinWidth}></input>
             <p>x</p>
             <input
               value={minHeight}
               placeholder="Min Height"
-              onChange={(event) => setMinHeight(event.target.value)}></input>
+              onChange={handleChangeMinHeight}></input>
           </form>
         </div>
         <div className="filter color">

@@ -23,14 +23,18 @@ body {
 .icon{
   color: rgb(31, 31, 37);
   font-size: 25px;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .input{
   font-size: 32px;
   font-weight: 600;
   letter-spacing: 1px;
+  padding: 5px;
+  padding-left: 20px;
   border: 0px;
+  border-radius: 25px;
+  background-color: rgb(247, 247, 247);
 }
 
 ::placeholder{
@@ -52,7 +56,6 @@ text--:focus, input:focus{
 .sort, .filter{
   padding-right: 10px;
   margin-right: 15px;
-
 }
 
 .sort{
@@ -151,68 +154,68 @@ input[type=checkbox] + label:before{
   content:"";
   border-radius: 25px;
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
 }
 
 input[id=grayscale] + label:before{
-  border: 3px solid rgb(207, 207, 207);
+  border: 4px solid rgb(207, 207, 207);
   background-color: rgb(207, 207, 207);
 
 }
 input[id=grayscale]:checked + label:before{
   content:"";
-  border: 3px solid rgb(112, 112, 112);
+  border: 4px solid rgb(112, 112, 112);
 }
 
 input[id=orange] + label:before{
-  border: 3px solid rgb(255, 221, 182);
+  border: 4px solid rgb(255, 221, 182);
   background-color: rgb(255, 221, 182);
 
 }
 input[id=orange]:checked + label:before{
   content:"";
-  border: 3px solid rgb(255, 173, 80);
+  border: 4px solid rgb(255, 173, 80);
 }
 
 input[id=red] + label:before{
-  border: 3px solid rgb(255, 182, 182);
+  border: 4px solid rgb(255, 182, 182);
   background-color: rgb(255, 182, 182);
 
 }
 input[id=red]:checked + label:before{
   content:"";
-  border: 3px solid rgb(255, 133, 133);
+  border: 4px solid rgb(255, 133, 133);
 }
 
 input[id=green] + label:before{
-  border: 3px solid rgb(168, 235, 161);
+  border: 4px solid rgb(168, 235, 161);
   background-color: rgb(168, 235, 161);
 
 }
 input[id=green]:checked + label:before{
   content:"";
-  border: 3px solid rgb(122, 224, 110);
+  border: 4px solid rgb(122, 224, 110);
 }
 
 input[id=blue] + label:before{
-  border: 3px solid rgb(182, 226, 255);
+  border: 4px solid rgb(182, 226, 255);
   background-color: rgb(182, 226, 255);
 
 }
 input[id=blue]:checked + label:before{
   content:"";
-  border: 3px solid rgb(105, 195, 255);
+  border: 4px solid rgb(105, 195, 255);
 }
 
 input[id=brown] + label:before{
-  border: 3px solid rgb(195, 155, 119);
+  border: 4px solid rgb(195, 155, 119);
   background-color: rgb(195, 155, 119);
 
 }
 input[id=brown]:checked + label:before{
   content:"";
-  border: 3px solid rgb(179, 121, 46);
+  border: 4px solid rgb(179, 121, 46);
 }
 
 /* image grid */

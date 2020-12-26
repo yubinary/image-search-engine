@@ -8,10 +8,18 @@ export default function SearchResult() {
   const [images, setImages] = useState([]);
 
   // when form submitted, send get request to API
-  function getImages(searchTerm) {
-    var API_KEY = "19383178-42909148a8b02e3e78ee4e9be";
-    var URL = "https://pixabay.com/api/?key=" + API_KEY + "&q=" + encodeURIComponent(searchTerm) + "&image_type=photo&pretty=true";
+  function getImages(searchTerm, order, orie, minWidth, minHeight, color) {
+    const API_KEY = "19383178-42909148a8b02e3e78ee4e9be";
+    let searchURL = "&q=" + encodeURIComponent(searchTerm);
+    let orderURL = order ? "&order=" + order : "";
+    let orieURL = orie ? "&orientation=" + orie : "";
+    let widthURL = minWidth ? "&min_width=" + minWidth : "";
+    let heightURL = minHeight ? "&min_height=" + minHeight : "";
+    let colorURL = color ? "&colors=" + color : "";
+    let defaultURL = "&image_type=photo&pretty=true";
+    let URL = "https://pixabay.com/api/?key=" + API_KEY + searchURL + "&colors=white,red" + orderURL + orieURL + widthURL + heightURL + colorURL + defaultURL;
 
+    console.log(URL)
     axios.get(URL)
       .then(result => {
         setImages(result.data.hits);

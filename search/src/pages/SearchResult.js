@@ -1,11 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import SearchEngine from "./SearchEngine.js";
+import SearchEngine from "../components/SearchEngine.js";
 import { BiComment, BiHeart, BiLike } from "react-icons/bi";
 import "../styles/SearchResult.css";
 
 export default function SearchResult() {
   const [images, setImages] = useState([]);
+  const [scrollTop, setScrollTop] = useState("");
+  const [page, setPage] = useState(1);
+
+  // throttle to enable infinite scrolling
+  const throttle = (fn, delay) => {
+    let last = 0;
+    return function (...args) {
+      const now = new Date().getTime();
+      if (now - last < delay) return;
+      else last = now;
+      return fn(...args);
+    }
+  }
+
+  useEffect(() => {
+    function onScroll(event) {
+      setScrollTop(Math.round(event.target.scrollingElement.scrollTop));
+    }
+    const throttleOnScroll = throttle(onScroll, 500);
+    window.addEventListener('scroll', throttleOnScroll);
+  }, []);
 
   // helper function to clean color object
   function makeListParameter(color) {
@@ -24,8 +45,8 @@ export default function SearchResult() {
     let widthURL = minWidth ? "&min_width=" + minWidth : "";
     let heightURL = minHeight ? "&min_height=" + minHeight : "";
     let colorURL = color ? "&colors=" + makeListParameter(color) : "";
-    let defaultURL = "&image_type=photo&pretty=true";
-    let URL = "https://pixabay.com/api/?key=" + API_KEY + searchURL + orderURL + orieURL + widthURL + heightURL + colorURL + defaultURL;
+    let defaultURL = "&image_type=photo&pretty=true&safesearch=true&page=";
+    let URL = "https://pixabay.com/api/?key=" + API_KEY + searchURL + orderURL + orieURL + widthURL + heightURL + colorURL + defaultURL + page;
 
     console.log(URL)
     axios.get(URL)
@@ -37,6 +58,7 @@ export default function SearchResult() {
       })
   }
 
+  // display tags
   function displayTags(tags) {
     let lst = tags.split(",");
     let result = [];
@@ -49,16 +71,18 @@ export default function SearchResult() {
     } return result
   }
 
+  // display stats
   function displayStats(comments, favorites, likes) {
     return (
       <div className="stat">
-        <BiComment className="stat-icon" /><p>{comments}</p>
         <BiHeart className="stat-icon" /><p>{favorites}</p>
         <BiLike className="stat-icon" /><p>{likes}</p>
+        <BiComment className="stat-icon" /><p>{comments}</p>
       </div>
     )
   }
 
+  // display all images
   function displayImages(images, n) {
     let result = [];
     for (let i = n; i < images.length; i += 4) {
@@ -80,6 +104,7 @@ export default function SearchResult() {
     return result;
   }
 
+  // create four columns for image grid
   function createColumns(images) {
     let result = [];
     let imagesCopy = JSON.parse(JSON.stringify(images));

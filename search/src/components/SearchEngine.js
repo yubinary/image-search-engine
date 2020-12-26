@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaSearch } from "react-icons/fa";
 import Checkbox from "./Checkbox.js"
 
@@ -9,6 +9,10 @@ export default function SearchResult({ getImages }) {
   const [minWidth, setMinWidth] = useState("");
   const [minHeight, setMinHeight] = useState("");
   const [color, setColor] = useState({});
+
+  useEffect(() => {
+    getImages("", "", "", "", "", "");
+  }, []);
 
   // debounce to send request every 500ms
   const debounce = (fn, delay) => {

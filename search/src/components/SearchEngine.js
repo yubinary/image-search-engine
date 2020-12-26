@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { FaSearch, FaSortDown } from "react-icons/fa";
-import { BiSort } from "react-icons/bi";
+import { FaSearch } from "react-icons/fa";
 import Checkbox from "./Checkbox.js"
 
 export default function SearchResult({ getImages }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [order, setOrder] = useState("");
   const [orie, setOrie] = useState("");
-  const [minWidth, setMinWidth] = useState(0);
-  const [minHeight, setMinHeight] = useState(0);
+  const [minWidth, setMinWidth] = useState("");
+  const [minHeight, setMinHeight] = useState("");
   const [color, setColor] = useState({});
 
 
@@ -24,13 +23,9 @@ export default function SearchResult({ getImages }) {
   };
 
   function handleChangeColor(event) {
-    setColor(event.target.value);
-    getImages(searchTerm, order, orie, minWidth, minHeight, event.target.value);
-  };
-
-  function handleChangeColor(event) {
-    setColor({ ...color, [event.target.name]: event.target.checked });
-    console.log(color);
+    let obj = { ...color, [event.target.name]: event.target.checked }
+    setColor(obj);
+    getImages(searchTerm, order, orie, minWidth, minHeight, obj);
   }
 
   // when form submitted, send get request to API
@@ -92,21 +87,27 @@ export default function SearchResult({ getImages }) {
             <option value="popular">Popular</option>
             <option value="latest">Latest</option>
           </select>
-          <div class="select-arrow"></div>
+          <div className="select-arrow"></div>
         </div>
         <div className="sort orie">
           <select onChange={handleChangeOrie}>
-            <option value="all">Both</option>
+            <option value="all">All Shapes</option>
             <option value="horizontal">Horizontal</option>
             <option value="vertical">Vertical</option>
           </select>
-          <div class="select-arrow"></div>
+          <div className="select-arrow"></div>
         </div>
         <div className="filter min">
-          <form>
-            <input value={minWidth} onChange={(event) => setMinWidth(event.target.value)}></input>
-            <input value={minHeight} onChange={(event) => setMinHeight(event.target.value)}></input>
-            <button onClick={handleSubmit}>size</button>
+          <form onSubmit={handleSubmit}>
+            <input
+              value={minWidth}
+              placeholder="Min Width"
+              onChange={(event) => setMinWidth(event.target.value)}></input>
+            <p>x</p>
+            <input
+              value={minHeight}
+              placeholder="Min Height"
+              onChange={(event) => setMinHeight(event.target.value)}></input>
           </form>
         </div>
         <div className="filter color">
@@ -114,7 +115,7 @@ export default function SearchResult({ getImages }) {
             checkboxes.map(item => (
               <div>
                 <Checkbox id={item.name} name={item.name} checked={color[item.name]} onChange={handleChangeColor} />
-                <label for={item.name}></label>
+                <label htmlFor={item.name}></label>
               </div>
             ))
           }

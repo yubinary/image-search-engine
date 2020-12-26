@@ -46,7 +46,7 @@ text--:focus, input:focus{
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-bottom: 70px;
+  margin-bottom: 100px;
 }
 
 .sort, .filter{
@@ -96,7 +96,41 @@ select {
 }
 
 .orie select{
-  width: 110px;
+  width: 115px;
+}
+
+.min{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.min form{
+  display: flex;
+  flex-direction: row;
+}
+
+.min input{
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border: none;
+  border-bottom: 2px solid rgb(240, 240, 240); 
+  width: 88px;
+  height: 50px;
+  padding: 10px 5px;
+}
+
+.min p{
+  margin: 15px;
+}
+
+button{
+  border: 2px solid rgb(240, 240, 240); 
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 10px 20px;
 }
 
 .color{

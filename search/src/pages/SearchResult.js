@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SearchEngine from "../components/SearchEngine.js";
+import Header from "../components/Header.js";
+
 import { BiComment, BiHeart, BiLike, BiErrorAlt } from "react-icons/bi";
 import "../styles/SearchResult.css";
 
@@ -152,6 +154,7 @@ export default function SearchResult() {
 
   return (
     <div>
+      <Header />
       <SearchEngine makeUrl={makeUrl} />
       <div className="images">
         <div className="row">

@@ -314,3 +314,26 @@ a, a:hover, a:visited{
   text-transform: uppercase;
   color:rgb(31, 130, 148);
 }
+
+/* no search result page */
+.empty-column{
+  margin: auto;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 100%;
+}
+
+.empty-column .icon{
+  font-size: 30px;
+  color: rgb(95, 95, 95);
+}
+
+.empty-column h1{
+  font-size: 25px;
+  color: rgb(95, 95, 95);
+}
+
+.empty-column p{
+  font-size: 18px;
+  color: rgb(136, 136, 136);
+}

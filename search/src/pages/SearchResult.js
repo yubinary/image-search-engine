@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SearchEngine from "../components/SearchEngine.js";
-import { BiComment, BiHeart, BiLike } from "react-icons/bi";
+import { BiComment, BiHeart, BiLike, BiErrorAlt } from "react-icons/bi";
 import "../styles/SearchResult.css";
 
 export default function SearchResult() {
@@ -40,7 +40,6 @@ export default function SearchResult() {
 
   // make get request to pixabay API
   function makeFetch(url, page) {
-    console.log(url + page)
     axios.get(url + page)
       .then(result => {
         if (page === 1) {
@@ -131,13 +130,24 @@ export default function SearchResult() {
   function createColumns(images) {
     let result = [];
     let imagesCopy = JSON.parse(JSON.stringify(images));
-    for (let n = 0; n < 4; n++) {
+    if (imagesCopy.length === 0) {
       result.push(
-        <div className="column">
-          {displayImages(imagesCopy, n)}
+        <div className="empty-column">
+          <BiErrorAlt className="icon" />
+          <h1>No images found</h1>
+          <p>Please try searching with another term.</p>
         </div>
       )
-    } return result;
+    } else {
+      for (let n = 0; n < 4; n++) {
+        result.push(
+          <div className="column">
+            {displayImages(imagesCopy, n)}
+          </div>
+        )
+      }
+    }
+    return result;
   }
 
   return (

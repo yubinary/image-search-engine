@@ -6,8 +6,9 @@ import "../styles/SearchResult.css";
 
 export default function SearchResult() {
   const [images, setImages] = useState([]);
-  const [scrollTop, setScrollTop] = useState("");
+  const [isBottom, setisBottom] = useState(false);
   const [page, setPage] = useState(1);
+  const [urlParam, setUrlParam] = useState("");
 
   // throttle to enable infinite scrolling
   const throttle = (fn, delay) => {
@@ -22,11 +23,37 @@ export default function SearchResult() {
 
   useEffect(() => {
     function onScroll(event) {
-      setScrollTop(Math.round(event.target.scrollingElement.scrollTop));
+      let scrollHeight = event.target.scrollingElement.scrollHeight;
+      let scrollTop = event.target.scrollingElement.scrollTop;
+      let clientHeight = event.target.scrollingElement.clientHeight
+      setisBottom(scrollHeight - scrollTop < clientHeight + 600)
     }
-    const throttleOnScroll = throttle(onScroll, 500);
+    const throttleOnScroll = throttle(onScroll, 800);
     window.addEventListener('scroll', throttleOnScroll);
-  }, []);
+
+    // when reaches bottom, fetch to load more images
+    if (isBottom) {
+      setPage(page => page + 1);
+      makeFetch(urlParam, page + 1)
+    }
+  }, [isBottom]);
+
+  // make get request to pixabay API
+  function makeFetch(url, page) {
+    console.log(url + page)
+    axios.get(url + page)
+      .then(result => {
+        if (page === 1) {
+          setImages(result.data.hits);
+        } else {
+          // if page is greater than 1, load more images
+          setImages([...images, ...result.data.hits])
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  }
 
   // helper function to clean color object
   function makeListParameter(color) {
@@ -37,7 +64,7 @@ export default function SearchResult() {
   }
 
   // when form submitted, send get request to API
-  function getImages(searchTerm, order, orie, minWidth, minHeight, color) {
+  function makeUrl(searchTerm, order, orie, minWidth, minHeight, color) {
     const API_KEY = "19383178-42909148a8b02e3e78ee4e9be";
     let searchURL = "&q=" + encodeURIComponent(searchTerm);
     let orderURL = order ? "&order=" + order : "";
@@ -46,16 +73,12 @@ export default function SearchResult() {
     let heightURL = minHeight ? "&min_height=" + minHeight : "";
     let colorURL = color ? "&colors=" + makeListParameter(color) : "";
     let defaultURL = "&image_type=photo&pretty=true&safesearch=true&page=";
-    let URL = "https://pixabay.com/api/?key=" + API_KEY + searchURL + orderURL + orieURL + widthURL + heightURL + colorURL + defaultURL + page;
+    let URL = "https://pixabay.com/api/?key=" + API_KEY + searchURL + orderURL + orieURL + widthURL + heightURL + colorURL + defaultURL;
 
-    console.log(URL)
-    axios.get(URL)
-      .then(result => {
-        setImages(result.data.hits);
-      })
-      .catch(error => {
-        console.error(error);
-      })
+    setUrlParam(URL);
+    // resets page to 1 when search engine used
+    setPage(1)
+    makeFetch(URL, 1);
   }
 
   // display tags
@@ -119,7 +142,7 @@ export default function SearchResult() {
 
   return (
     <div>
-      <SearchEngine getImages={getImages} />
+      <SearchEngine makeUrl={makeUrl} />
       <div className="images">
         <div className="row">
           {createColumns(images)}

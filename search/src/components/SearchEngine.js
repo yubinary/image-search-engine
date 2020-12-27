@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaSearch } from "react-icons/fa";
 import Checkbox from "./Checkbox.js"
 
-export default function SearchResult({ getImages }) {
+export default function SearchResult({ makeUrl }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [order, setOrder] = useState("");
   const [orie, setOrie] = useState("");
@@ -11,7 +11,7 @@ export default function SearchResult({ getImages }) {
   const [color, setColor] = useState({});
 
   useEffect(() => {
-    getImages("", "", "", "", "", "");
+    makeUrl("", "", "", "", "", "");
   }, []);
 
   // debounce to send request every 500ms
@@ -30,31 +30,31 @@ export default function SearchResult({ getImages }) {
   // used callback to avoid function being created every time
   const debounceMinWidth = useRef(
     debounce((event) =>
-      getImages(searchTerm, order, orie, event.target.value, minHeight, color), 500
+      makeUrl(searchTerm, order, orie, event.target.value, minHeight, color), 500
     )
   ).current;
 
   const debounceMinHeight = useRef(
     debounce((event) =>
-      getImages(searchTerm, order, orie, minWidth, event.target.value, color), 500
+      makeUrl(searchTerm, order, orie, minWidth, event.target.value, color), 500
     )
   ).current;
 
   // apply whatever inside the input field to state
   function handleChangeOrder(event) {
     setOrder(event.target.value);
-    getImages(searchTerm, event.target.value, orie, minWidth, minHeight, color);
+    makeUrl(searchTerm, event.target.value, orie, minWidth, minHeight, color);
   };
 
   function handleChangeOrie(event) {
     setOrie(event.target.value);
-    getImages(searchTerm, order, event.target.value, minWidth, minHeight, color);
+    makeUrl(searchTerm, order, event.target.value, minWidth, minHeight, color);
   };
 
   function handleChangeColor(event) {
     let obj = { ...color, [event.target.name]: event.target.checked }
     setColor(obj);
-    getImages(searchTerm, order, orie, minWidth, minHeight, obj);
+    makeUrl(searchTerm, order, orie, minWidth, minHeight, obj);
   }
 
   function handleChangeMinWidth(event) {
@@ -71,7 +71,7 @@ export default function SearchResult({ getImages }) {
   function handleSubmit(event) {
     // prevent default action of form (ex. refresh the page)
     event.preventDefault();
-    getImages(searchTerm, order, orie, minWidth, minHeight, color);
+    makeUrl(searchTerm, order, orie, minWidth, minHeight, color);
   }
 
   const checkboxes = [

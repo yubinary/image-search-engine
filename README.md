@@ -5,6 +5,7 @@
 
 An image search engine that lets you search for an image by simply typing in a word or a phrase. 
 
+
 ## Basic Features
 * sort the images in popular or latest order
 * filter by color and shape
@@ -13,6 +14,7 @@ An image search engine that lets you search for an image by simply typing in a w
 ## Advanced Features
 * enabled infinite scrolling using throttle
 * delayed request when typing using debounce
+* lazy loaded images to create placeholder
 
 ## License
 

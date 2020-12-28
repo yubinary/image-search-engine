@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { LazyImage } from "react-lazy-images";
 import SearchEngine from "../components/SearchEngine.js";
 import Header from "../components/Header.js";
-
 import { BiComment, BiHeart, BiLike, BiErrorAlt } from "react-icons/bi";
 import "../styles/SearchResult.css";
 
@@ -45,6 +45,7 @@ export default function SearchResult() {
     axios.get(url + page)
       .then(result => {
         if (page === 1) {
+          setImages([]);
           setImages(result.data.hits);
         } else {
           // if page is greater than 1, load more images
@@ -106,14 +107,22 @@ export default function SearchResult() {
     )
   }
 
-  // display all images
+  // display all images, used lazy loading 
   function displayImages(images, n) {
     let result = [];
     for (let i = n; i < images.length; i += 4) {
       let image = images[i];
       result.push(
         <div className="card">
-          <img src={image.largeImageURL} alt={image.id} />
+          <LazyImage
+            src={image.largeImageURL}
+            alt={image.id}
+            placeholder={({ imageProps, ref }) =>
+              <div ref={ref} className="preloader">
+              </div>
+            }
+            actual={({ imageProps }) => <img {...imageProps} />}
+          />
           <div className="container">
             <div className="stats">
               {displayStats(image.comments, image.favorites, image.likes)}
@@ -122,17 +131,17 @@ export default function SearchResult() {
               {displayTags(image.tags)}
             </div>
           </div>
-        </div>
+        </div >
       )
     }
     return result;
   }
 
   // create four columns for image grid
-  function createColumns(images) {
+  function createColumns(images, url) {
     let result = [];
     let imagesCopy = JSON.parse(JSON.stringify(images));
-    if (imagesCopy.length === 0) {
+    if (imagesCopy.length === 0 && url.length > 117) {
       result.push(
         <div className="empty-column">
           <BiErrorAlt className="icon" />
@@ -158,7 +167,7 @@ export default function SearchResult() {
       <SearchEngine makeUrl={makeUrl} />
       <div className="images">
         <div className="row">
-          {createColumns(images)}
+          {createColumns(images, urlParam)}
         </div>
       </div>
     </div >

@@ -7,9 +7,6 @@ An [image search engine](https://yubin-searchimage.herokuapp.com/) that lets you
 
 <img src="demo.gif" alt="Demo GIF" width="500"/>
 
-
-<!-- TABLE OF CONTENTS -->
-# Table of Contents
 * [Features](##basic-features)
   * [Basic Features](##basic-features)
   * [Advanced Features](##advanced-features)
